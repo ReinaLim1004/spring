@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEP-漢 프로젝트 - 모둠 점수판</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐉 DEEP-漢 프로젝트 수업 점수판</h1>
+            <p class="subtitle">퀴즈를 맞추거나 좋은 질문을 한 모둠에게 점수를! (총 4차시)</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="changePeriod('total')">누적 점수</button>
+            <button class="tab-btn" onclick="changePeriod(1)">1차시</button>
+            <button class="tab-btn" onclick="changePeriod(2)">2차시</button>
+            <button class="tab-btn" onclick="changePeriod(3)">3차시</button>
+            <button class="tab-btn" onclick="changePeriod(4)">4차시</button>
+        </div>
+
+        <div class="view-indicator">
+            현재 보기: <span id="current-view">누적 점수</span>
+        </div>
+
+        <div class="scoreboard" id="scoreboard">
+            </div>
+
+        <footer>
+            <button class="reset-btn" onclick="resetScores()">점수 초기화</button>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
