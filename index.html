@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEEP-漢 프로젝트 - 모둠 점수판</title>
+    <title>DEEP-漢 프로젝트 수업 점수판</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,7 +26,71 @@
         </div>
 
         <div class="scoreboard" id="scoreboard">
+            <div class="team-card">
+                <div class="team-name">1모둠</div>
+                <div class="score-display" id="score-team-0">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-0" onclick="updateScore(0, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-0" onclick="updateScore(0, 1)" disabled>+</button>
+                </div>
             </div>
+            <div class="team-card">
+                <div class="team-name">2모둠</div>
+                <div class="score-display" id="score-team-1">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-1" onclick="updateScore(1, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-1" onclick="updateScore(1, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">3모둠</div>
+                <div class="score-display" id="score-team-2">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-2" onclick="updateScore(2, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-2" onclick="updateScore(2, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">4모둠</div>
+                <div class="score-display" id="score-team-3">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-3" onclick="updateScore(3, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-3" onclick="updateScore(3, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">5모둠</div>
+                <div class="score-display" id="score-team-4">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-4" onclick="updateScore(4, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-4" onclick="updateScore(4, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">6모둠</div>
+                <div class="score-display" id="score-team-5">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-5" onclick="updateScore(5, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-5" onclick="updateScore(5, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">7모둠</div>
+                <div class="score-display" id="score-team-6">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-6" onclick="updateScore(6, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-6" onclick="updateScore(6, 1)" disabled>+</button>
+                </div>
+            </div>
+            <div class="team-card">
+                <div class="team-name">8모둠</div>
+                <div class="score-display" id="score-team-7">0점</div>
+                <div class="control-btns">
+                    <button class="btn btn-minus" id="minus-7" onclick="updateScore(7, -1)" disabled>-</button>
+                    <button class="btn btn-plus" id="plus-7" onclick="updateScore(7, 1)" disabled>+</button>
+                </div>
+            </div>
+        </div>
 
         <footer>
             <button class="reset-btn" onclick="resetScores()">점수 초기화</button>
