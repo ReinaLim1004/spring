@@ -4,7 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEEP-漢 프로젝트 수업 점수판</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: 2px solid #3498db;
+            background-color: white;
+            color: #3498db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .winner-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            background: #fff8f0;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed #e67e22;
+        }
+
+        .view-indicator {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .winner-btn {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .winner-btn:hover {
+            background-color: #d35400;
+        }
+
+        .winner-display {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #d35400;
+            background: #ffeaa7;
+            padding: 10px 30px;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+
+        /* 가로로 예쁘게 정렬하는 그리드 레이아웃 */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) { .scoreboard { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .scoreboard { grid-template-columns: 1fr; } }
+
+        .team-card {
+            background: #ffffff;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card.highlight {
+            border-color: #f1c40f;
+            background-color: #fffff0;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.6);
+            transform: scale(1.03);
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #f1f2f6;
+            padding-bottom: 8px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .control-btns {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-minus { background-color: #e74c3c; color: white; }
+        .btn-minus:hover { background-color: #c0392b; }
+        .btn-plus { background-color: #2ecc71; color: white; }
+        .btn-plus:hover { background-color: #27ae60; }
+        .btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+
+        footer { text-align: center; }
+        .reset-btn { padding: 10px 20px; background-color: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; }
+        .reset-btn:hover { background-color: #7f8c8d; }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -99,6 +287,113 @@
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        let currentPeriod = 'total'; 
+        let scores = JSON.parse(localStorage.getItem('DEEPHanScores')) || {
+            1: Array(8).fill(0),
+            2: Array(8).fill(0),
+            3: Array(8).fill(0),
+            4: Array(8).fill(0)
+        };
+
+        window.onload = function() {
+            updateDisplay();
+        };
+
+        function updateDisplay() {
+            document.getElementById('winner-display').classList.add('hidden');
+
+            for (let i = 0; i < 8; i++) {
+                const cardElement = document.getElementById(`card-${i}`);
+                if (cardElement) {
+                    cardElement.classList.remove('highlight');
+                }
+
+                let displayScore = 0;
+                if (currentPeriod === 'total') {
+                    displayScore = scores[1][i] + scores[2][i] + scores[3][i] + scores[4][i];
+                } else {
+                    displayScore = scores[currentPeriod][i];
+                }
+
+                document.getElementById(`score-team-${i}`).innerText = `${displayScore}점`;
+
+                const isControlDisabled = currentPeriod === 'total';
+                document.getElementById(`minus-${i}`).disabled = isControlDisabled;
+                document.getElementById(`plus-${i}`).disabled = isControlDisabled;
+            }
+        }
+
+        function updateScore(teamIndex, amount) {
+            if (currentPeriod === 'total') return; 
+            scores[currentPeriod][teamIndex] += amount;
+            localStorage.setItem('DEEPHanScores', JSON.stringify(scores));
+            updateDisplay();
+        }
+
+        function changePeriod(period) {
+            currentPeriod = period;
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            if (period === 'total') {
+                buttons[0].classList.add('active');
+                document.getElementById('current-view').innerText = '현재 보기: 누적 점수 (전체 합산)';
+            } else {
+                buttons[period].classList.add('active');
+                document.getElementById('current-view').innerText = `현재 보기: ${period}차시 점수`;
+            }
+
+            updateDisplay();
+        }
+
+        function checkWinner() {
+            let currentScores = [];
+
+            for (let i = 0; i < 8; i++) {
+                if (currentPeriod === 'total') {
+                    currentScores.push(scores[1][i] + scores[2][i] + scores[3][i] + scores[4][i]);
+                } else {
+                    currentScores.push(scores[currentPeriod][i]);
+                }
+            }
+
+            const maxScore = Math.max(...currentScores);
+
+            if (maxScore === 0) {
+                alert("아직 획득한 점수가 없어 우승 모둠을 정할 수 없습니다.");
+                return;
+            }
+
+            let winners = [];
+            currentScores.forEach((score, index) => {
+                if (score === maxScore) {
+                    winners.push(`${index + 1}모둠`);
+                    document.getElementById(`card-${index}`).classList.add('highlight');
+                } else {
+                    document.getElementById(`card-${index}`).classList.remove('highlight');
+                }
+            });
+
+            const winnerDisplay = document.getElementById('winner-display');
+            const periodText = currentPeriod === 'total' ? '🎉 최종 프로젝트' : `🎉 ${currentPeriod}차시`;
+            
+            winnerDisplay.innerText = `${periodText} 우승: ${winners.join(', ')} (${maxScore}점) 👏`;
+            winnerDisplay.classList.remove('hidden');
+        }
+
+        function resetScores() {
+            if (confirm("정말로 모든 차시의 점수를 초기화하시겠습니까?")) {
+                scores = {
+                    1: Array(8).fill(0),
+                    2: Array(8).fill(0),
+                    3: Array(8).fill(0),
+                    4: Array(8).fill(0)
+                };
+                localStorage.setItem('DEEPHanScores', JSON.stringify(scores));
+                updateDisplay();
+            }
+        }
+    </script>
 </body>
 </html>
